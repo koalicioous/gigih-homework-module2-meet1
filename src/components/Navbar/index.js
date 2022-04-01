@@ -11,7 +11,7 @@ const SCOPE = 'playlist-modify-private'
 
 const Navbar = () => {
     const [token,setToken] = useState(null);
-    const [query,setQuery] = useState('');
+    const [query,setQuery] = useState('')
     const { result, setResult } = useSearchResult()
 
     const handleAuthorizeUser = () => {
@@ -19,6 +19,7 @@ const Navbar = () => {
     }
 
     const parseToken = (url) => {
+        const example = '#access_token=BQAU7t_Cs1SLDx-UjeQ_-wpVZq-J6EEJ0m3R_ah_y-E8Xwk2PNE_s2sN575m88UhuJPa_AV3GHNfjVOoMrcdu7W17RHQfik-_dc9FZUeyXPrxAFTK8XBX1Y6iw_WIYVP8tXvoHAF04Xu0BTRIFACKV95adp1ebh2drpO3iiKWIRbbRJJ4Yj37VgFdf-myvLMidw&token_type=Bearer&expires_in=3600'
         const parsed = url.split('&')[0].split('=')
         const token = parsed[parsed.length-1] ?? null
         setToken(token)

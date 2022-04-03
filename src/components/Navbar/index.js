@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Container from "../Container";
 import axios from 'axios'
 import { useSearchResult } from '../../context/useSearchResult';
+import { useStoreApi } from '../../context/useStoreApi';
 
 const BASE_URL = process.env.REACT_APP_SPOTIFY_BASE_URL
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID
@@ -10,23 +11,22 @@ const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI
 const SCOPE = 'playlist-modify-private'
 
 const Navbar = () => {
-    const [token,setToken] = useState(null);
     const [query,setQuery] = useState('')
     const { result, setResult } = useSearchResult()
+    const { token, setToken } = useStoreApi()
 
     const handleAuthorizeUser = () => {
         window.location.replace(`${AUTHORIZE_URL}?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}`)
     }
 
     const parseToken = (url) => {
-        const example = '#access_token=BQAU7t_Cs1SLDx-UjeQ_-wpVZq-J6EEJ0m3R_ah_y-E8Xwk2PNE_s2sN575m88UhuJPa_AV3GHNfjVOoMrcdu7W17RHQfik-_dc9FZUeyXPrxAFTK8XBX1Y6iw_WIYVP8tXvoHAF04Xu0BTRIFACKV95adp1ebh2drpO3iiKWIRbbRJJ4Yj37VgFdf-myvLMidw&token_type=Bearer&expires_in=3600'
         const parsed = url.split('&')[0].split('=')
         const token = parsed[parsed.length-1] ?? null
         setToken(token)
     }
 
     const handleSearch = async () => {
-        const response = await axios.get(`${BASE_URL}search`,{
+        await axios.get(`${BASE_URL}search`,{
             params: {
                 q: query,
                 type: 'track'
@@ -47,8 +47,8 @@ const Navbar = () => {
     return (
         <section className="bg-gray-800 py-4">
             <Container>
-                <div className="flex items-center justify-between px-2">
-                    <a href="/" className="text-white font-bold text-xl">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between px-2">
+                    <a href="/" className="text-white font-bold text-lg lg:text-xl">
                         Spotify Clone
                     </a>
                     {
@@ -61,7 +61,7 @@ const Navbar = () => {
                     }
                     {
                         token && 
-                        <div className=''>
+                        <div className='flex flex-col md:flex-row items-start md:items-center my-2 space-y-2'>
                             {
                                 result.length > 0 &&
                                 <button className='mr-4 text-white' onClick={() => {
@@ -71,8 +71,10 @@ const Navbar = () => {
                                     Clear Result
                                 </button>
                             }
-                            <input name="query" className='rounded-l-full py-2 px-4' value={query} onChange={(e) => setQuery(e.target.value)} />
-                            <button className='bg-green-500 py-2 px-4 rounded-r-full' onClick={handleSearch}>Search</button>
+                            <div className='flex'>
+                                <input name="query" className='rounded-l-full py-2 px-4' value={query} onChange={(e) => setQuery(e.target.value)} />
+                                <button className='bg-green-500 py-2 px-4 rounded-r-full' onClick={handleSearch}>Search</button>
+                            </div>
                         </div>
                     }
                 </div>

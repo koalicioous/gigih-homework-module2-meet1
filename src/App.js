@@ -4,6 +4,8 @@ import Header from './components/Header'
 import Tracks from './components/Tracks'
 import './App.css';
 import { SearchProvider, useSearchResult } from './context/useSearchResult';
+import { ApiProvider } from './context/useStoreApi';
+import UserPlaylist from './components/Playlist';
 
 function App() {
   const { result } = useSearchResult()
@@ -17,6 +19,7 @@ function App() {
             albumName={data.album.name}
           />
         }
+        <UserPlaylist />
         <Tracks />
         <div className='text-xs bg-gray-800 py-3 text-white'>
           Generasi Gigih Frontend Track Homework by Muhammad Ulil Albab Surya Negara
@@ -27,9 +30,11 @@ function App() {
 
 const AppContainer = () => {
   return (
-    <SearchProvider>
-      <App />
-    </SearchProvider>
+    <ApiProvider>
+      <SearchProvider>
+        <App />
+      </SearchProvider>
+    </ApiProvider>
   )
 }
 

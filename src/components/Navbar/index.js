@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Container from "../Container";
-import axios from 'axios'
+import { Link } from 'react-router-dom';
 import { useSearchResult } from '../../context/useSearchResult';
 import { useStoreApi } from '../../context/useStoreApi';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +17,6 @@ const Navbar = () => {
     const { result, setResult } = useSearchResult()
     const { axios } = useStoreApi()
 
-    
     const token = useSelector(state => state.auth.token)
     const dispatch = useDispatch()
 
@@ -54,9 +53,9 @@ const Navbar = () => {
         <section className="bg-gray-800 py-4">
             <Container>
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between px-2">
-                    <a href="/" className="text-white font-bold text-lg lg:text-xl">
+                    <Link to="/" className="text-white font-bold text-lg lg:text-xl">
                         Spotify Clone
-                    </a>
+                    </Link>
                     {
                         !token &&
                         <button
